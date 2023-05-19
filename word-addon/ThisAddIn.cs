@@ -7,18 +7,13 @@ using Word = Microsoft.Office.Interop.Word;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools.Word;
 
-namespace word_addon
+namespace DocumentProject
 {
-    public partial class ThisAddIn
+    public partial class ThisDocument
     {
-        private void ThisAddIn_Startup(object sender, System.EventArgs e)
-        {
-            Word.Bibliography
-        }
-        /*https://learn.microsoft.com/en-us/dotnet/api/microsoft.office.tools.word.documentbase.bibliography?view=vsto-2017https://learn.microsoft.com/en-us/dotnet/api/microsoft.office.tools.word.documentbase.bibliography?view=vsto-2017https://learn.microsoft.com/en-us/dotnet/api/microsoft.office.tools.word.documentbase.bibliography?view=vsto-2017
-        */
         private void AddBibliography()
         {
+            Word.WdLanguageID lcid = Word.WdLanguageID.wdEnglishUS;
             string guid = System.Guid.NewGuid().ToString();
             string src =
                 "<b:Source><b:Tag>Jam08</b:Tag><b:SourceType>Book</b:SourceType>"
@@ -28,34 +23,21 @@ namespace word_addon
                 + "</b:Author><b:Title>Hollywood Secrets of Project Management "
                 + "Success</b:Title><b:Year>2008</b:Year><b:City>Redmond</b:City>"
                 + "<b:Publisher>Microsoft Press</b:Publisher></b:Source>";
+
             this.Bibliography.Sources.Add(src);
 
             this.Bibliography.BibliographyStyle = "APA";
             this.Paragraphs.Last.Range.InsertParagraphAfter();
+
             object fieldType = Word.WdFieldType.wdFieldBibliography;
+            object missing = System.Reflection.Missing.Value;
+
             this.Fields.Add(
                 this.Paragraphs.Last.Range,
                 ref fieldType,
                 ref missing,
                 ref missing);
         }
-
-        private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
-        {
-        }
-
-        #region VSTO generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InternalStartup()
-        {
-            this.Startup += new System.EventHandler(ThisAddIn_Startup);
-            this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
-        }
-        
-        #endregion
     }
+
 }
